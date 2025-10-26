@@ -25,13 +25,13 @@ const topicFilters = [
   />,
 ];
 
-export const VocabularyTopicList = () => (
+export const PhrasesTopicList = () => (
   <List filters={topicFilters} actions={<CreateButton />}>
     <Datagrid>
       <TextField source="title" label="Назва" />
       <TextField source="description" label="Опис" />
       <ChipField source="difficulty" label="Складність" />
-      <NumberField source="totalItems" label="Всього слів" />
+      <NumberField source="totalItems" label="Всього фраз" />
       <ImageField source="imageUrl" label="Зображення" />
       <EditButton />
       <DeleteButton />

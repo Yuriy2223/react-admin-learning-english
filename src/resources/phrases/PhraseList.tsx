@@ -13,11 +13,11 @@ import {
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const wordFilters = [
+const phraseFilters = [
   <ReferenceInput
     key="topic"
     source="topicId"
-    reference="vocabulary/admin/topics"
+    reference="phrases/admin/topics"
     alwaysOn
   >
     <AutocompleteInput
@@ -35,10 +35,10 @@ const ListActions = () => (
   </TopToolbar>
 );
 
-const WordListContent = () => {
+const PhraseListContent = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { data: topics, isLoading } = useGetList("vocabulary/admin/topics");
+  const { data: topics, isLoading } = useGetList("phrases/admin/topics");
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -55,11 +55,10 @@ const WordListContent = () => {
   }, [topics, isLoading, navigate, location]);
 
   return (
-    <List filters={wordFilters} actions={<ListActions />} perPage={25}>
+    <List filters={phraseFilters} actions={<ListActions />} perPage={25}>
       <Datagrid>
-        <TextField source="word" label="Слово" />
+        <TextField source="phrase" label="Фраза" />
         <TextField source="translation" label="Переклад" />
-        <TextField source="transcription" label="Транскрипція" />
         <EditButton />
         <DeleteButton />
       </Datagrid>
@@ -67,4 +66,4 @@ const WordListContent = () => {
   );
 };
 
-export const VocabularyWordList = WordListContent;
+export const PhraseList = PhraseListContent;
