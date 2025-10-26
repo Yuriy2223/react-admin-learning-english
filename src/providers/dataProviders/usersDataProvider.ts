@@ -13,8 +13,7 @@ import type {
 } from "react-admin";
 import { httpClient } from "../dataProvider";
 import type { User } from "../../types";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+import { API_URL } from "../authProvider";
 
 export const usersDataProvider = {
   getList: async (): Promise<GetListResult> => {

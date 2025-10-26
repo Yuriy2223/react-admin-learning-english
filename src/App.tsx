@@ -5,6 +5,8 @@ import { Dashboard } from "./components/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import BookIcon from "@mui/icons-material/Book";
 import AbcIcon from "@mui/icons-material/Abc";
+import ChatIcon from "@mui/icons-material/Chat";
+import CommentIcon from "@mui/icons-material/Comment";
 import { UserList } from "./resources/users/UserList";
 import { UserEdit } from "./resources/users/UserEdit";
 import { UserShow } from "./resources/users/UserShow";
@@ -14,6 +16,12 @@ import { VocabularyTopicCreate } from "./resources/vocabulary/TopicCreate";
 import { VocabularyWordList } from "./resources/vocabulary/WordList";
 import { VocabularyWordEdit } from "./resources/vocabulary/WordEdit";
 import { VocabularyWordCreate } from "./resources/vocabulary/WordCreate";
+import { PhrasesTopicList } from "./resources/phrases/PhrasesTopicList";
+import { PhrasesTopicEdit } from "./resources/phrases/PhrasesTopicEdit";
+import { PhrasesTopicCreate } from "./resources/phrases/PhrasesTopicCreate";
+import { PhraseList } from "./resources/phrases/PhraseList";
+import { PhraseEdit } from "./resources/phrases/PhraseEdit";
+import { PhraseCreate } from "./resources/phrases/PhraseCreate";
 
 function App() {
   return (
@@ -48,6 +56,24 @@ function App() {
         create={VocabularyWordCreate}
         icon={AbcIcon}
         options={{ label: "Vocabulary Words" }}
+      />
+
+      <Resource
+        name="phrases/admin/topics"
+        list={PhrasesTopicList}
+        edit={PhrasesTopicEdit}
+        create={PhrasesTopicCreate}
+        icon={ChatIcon}
+        options={{ label: "Phrases Topics" }}
+      />
+
+      <Resource
+        name="phrases/admin/phrase"
+        list={PhraseList}
+        edit={PhraseEdit}
+        create={PhraseCreate}
+        icon={CommentIcon}
+        options={{ label: "Phrases" }}
       />
     </Admin>
   );
