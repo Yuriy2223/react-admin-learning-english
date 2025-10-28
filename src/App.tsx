@@ -7,6 +7,9 @@ import BookIcon from "@mui/icons-material/Book";
 import AbcIcon from "@mui/icons-material/Abc";
 import ChatIcon from "@mui/icons-material/Chat";
 import CommentIcon from "@mui/icons-material/Comment";
+import SchoolIcon from "@mui/icons-material/School";
+import RuleIcon from "@mui/icons-material/Rule";
+import QuizIcon from "@mui/icons-material/Quiz";
 import { UserList } from "./resources/users/UserList";
 import { UserEdit } from "./resources/users/UserEdit";
 import { UserShow } from "./resources/users/UserShow";
@@ -22,8 +25,17 @@ import { PhrasesTopicCreate } from "./resources/phrases/PhrasesTopicCreate";
 import { PhraseList } from "./resources/phrases/PhraseList";
 import { PhraseEdit } from "./resources/phrases/PhraseEdit";
 import { PhraseCreate } from "./resources/phrases/PhraseCreate";
+import { GrammarTopicList } from "./resources/grammar/GrammarTopicList";
+import { GrammarTopicEdit } from "./resources/grammar/GrammarTopicEdit";
+import { GrammarTopicCreate } from "./resources/grammar/GrammarTopicCreate";
+import { GrammarRuleList } from "./resources/grammar/GrammarRuleList";
+import { GrammarRuleEdit } from "./resources/grammar/GrammarRuleEdit";
+import { GrammarRuleCreate } from "./resources/grammar/GrammarRuleCreate";
+import { GrammarQuestionList } from "./resources/grammar/GrammarQuestionList";
+import { GrammarQuestionCreate } from "./resources/grammar/GrammarQuestionCreate";
+import { GrammarQuestionEdit } from "./resources/grammar/GrammarQuestionEdit";
 
-function App() {
+export default function App() {
   return (
     <Admin
       dataProvider={dataProvider}
@@ -37,7 +49,7 @@ function App() {
         edit={UserEdit}
         show={UserShow}
         icon={PeopleIcon}
-        options={{ label: "Користувачі" }}
+        options={{ label: "Users" }}
       />
 
       <Resource
@@ -75,8 +87,33 @@ function App() {
         icon={CommentIcon}
         options={{ label: "Phrases" }}
       />
+
+      <Resource
+        name="grammar/admin/topics"
+        list={GrammarTopicList}
+        edit={GrammarTopicEdit}
+        create={GrammarTopicCreate}
+        icon={SchoolIcon}
+        options={{ label: "Grammar Topics" }}
+      />
+
+      <Resource
+        name="grammar/admin/rules"
+        list={GrammarRuleList}
+        edit={GrammarRuleEdit}
+        create={GrammarRuleCreate}
+        icon={RuleIcon}
+        options={{ label: "Grammar Rules" }}
+      />
+
+      <Resource
+        name="grammar/admin/questions"
+        list={GrammarQuestionList}
+        edit={GrammarQuestionEdit}
+        create={GrammarQuestionCreate}
+        icon={QuizIcon}
+        options={{ label: "Grammar Questions" }}
+      />
     </Admin>
   );
 }
-
-export default App;
