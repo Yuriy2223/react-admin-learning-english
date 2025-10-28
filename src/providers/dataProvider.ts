@@ -4,8 +4,13 @@ import { usersDataProvider } from "./dataProviders/usersDataProvider";
 import { vocabularyDataProvider } from "./dataProviders/vocabularyDataProvider";
 import { phrasesDataProvider } from "./dataProviders/phrasesDataProvider";
 import { API_URL } from "./authProvider";
+import { grammarDataProvider } from "./dataProviders/grammarDataProvider";
+import { refreshToken } from "../utils/tokenUtils";
 
-export const httpClient = (url: string, options: fetchUtils.Options = {}) => {
+export const httpClient = async (
+  url: string,
+  options: fetchUtils.Options = {}
+) => {
   const customHeaders = (options.headers ||
     new Headers({
       Accept: "application/json",
@@ -16,11 +21,32 @@ export const httpClient = (url: string, options: fetchUtils.Options = {}) => {
     customHeaders.set("Authorization", `Bearer ${token}`);
   }
 
-  return fetchUtils.fetchJson(url, {
-    ...options,
-    headers: customHeaders,
-    credentials: "include",
-  });
+  try {
+    return await fetchUtils.fetchJson(url, {
+      ...options,
+      headers: customHeaders,
+      credentials: "include",
+    });
+  } catch (error: unknown) {
+    const err = error as { status?: number };
+    if (err.status === 401) {
+      try {
+        const newToken = await refreshToken();
+
+        customHeaders.set("Authorization", `Bearer ${newToken}`);
+        return await fetchUtils.fetchJson(url, {
+          ...options,
+          headers: customHeaders,
+          credentials: "include",
+        });
+      } catch (refreshError) {
+        window.location.href = "/login";
+        throw refreshError;
+      }
+    }
+
+    throw error;
+  }
 };
 
 export const dataProvider: DataProvider = {
@@ -35,6 +61,10 @@ export const dataProvider: DataProvider = {
 
     if (resource.startsWith("phrases/")) {
       return phrasesDataProvider.getList(resource, params);
+    }
+
+    if (resource.startsWith("grammar/")) {
+      return grammarDataProvider.getList(resource, params);
     }
 
     const { json } = await httpClient(`${API_URL}/${resource}`);
@@ -57,6 +87,10 @@ export const dataProvider: DataProvider = {
       return phrasesDataProvider.getOne(resource, params);
     }
 
+    if (resource.startsWith("grammar/")) {
+      return grammarDataProvider.getOne(resource, params);
+    }
+
     const { json } = await httpClient(`${API_URL}/${resource}/${params.id}`);
     return { data: json };
   },
@@ -74,6 +108,10 @@ export const dataProvider: DataProvider = {
       return phrasesDataProvider.getMany(resource, params);
     }
 
+    if (resource.startsWith("grammar/")) {
+      return grammarDataProvider.getMany(resource, params);
+    }
+
     const promises = params.ids.map((id) =>
       httpClient(`${API_URL}/${resource}/${id}`).then(({ json }) => json)
     );
@@ -88,6 +126,10 @@ export const dataProvider: DataProvider = {
 
     if (resource.startsWith("phrases/")) {
       return phrasesDataProvider.getManyReference(resource, params);
+    }
+
+    if (resource.startsWith("grammar/")) {
+      return grammarDataProvider.getManyReference(resource, params);
     }
 
     const { json } = await httpClient(`${API_URL}/${resource}`);
@@ -109,6 +151,10 @@ export const dataProvider: DataProvider = {
 
     if (resource.startsWith("phrases/")) {
       return phrasesDataProvider.create(resource, params);
+    }
+
+    if (resource.startsWith("grammar/")) {
+      return grammarDataProvider.create(resource, params);
     }
 
     const { json } = await httpClient(`${API_URL}/${resource}`, {
@@ -136,6 +182,10 @@ export const dataProvider: DataProvider = {
 
     if (resource.startsWith("phrases/")) {
       return phrasesDataProvider.update(resource, params);
+    }
+
+    if (resource.startsWith("grammar/")) {
+      return grammarDataProvider.update(resource, params);
     }
 
     const { json } = await httpClient(`${API_URL}/${resource}/${params.id}`, {
@@ -173,6 +223,10 @@ export const dataProvider: DataProvider = {
       return phrasesDataProvider.delete(resource, params);
     }
 
+    if (resource.startsWith("grammar/")) {
+      return grammarDataProvider.delete(resource, params);
+    }
+
     const { json } = await httpClient(`${API_URL}/${resource}/${params.id}`, {
       method: "DELETE",
     });
@@ -190,6 +244,10 @@ export const dataProvider: DataProvider = {
 
     if (resource.startsWith("phrases/")) {
       return phrasesDataProvider.deleteMany(resource, params);
+    }
+
+    if (resource.startsWith("grammar/")) {
+      return grammarDataProvider.deleteMany(resource, params);
     }
 
     const promises = params.ids.map((id) =>

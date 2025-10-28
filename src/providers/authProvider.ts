@@ -1,4 +1,5 @@
 import type { AuthProvider } from "react-admin";
+import { refreshToken } from "../utils/tokenUtils";
 
 export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
@@ -24,7 +25,6 @@ export const authProvider: AuthProvider = {
     }
 
     const data = await response.json();
-
     const { accessToken, user } = data;
 
     if (!user.emailVerified) {
@@ -92,13 +92,29 @@ export const authProvider: AuthProvider = {
     return token ? Promise.resolve() : Promise.reject();
   },
 
-  checkError: (error) => {
+  checkError: async (error) => {
     const status = error.status;
-    if (status === 401 || status === 403) {
+
+    if (status === 401) {
+      try {
+        await refreshToken();
+        return Promise.resolve();
+      } catch {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        return Promise.reject({
+          message: "Authentication failed",
+          redirectTo: "/login",
+        });
+      }
+    }
+
+    if (status === 403) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      return Promise.reject();
+      return Promise.reject({ message: "Access denied" });
     }
+
     return Promise.resolve();
   },
 
@@ -128,7 +144,6 @@ export const authProvider: AuthProvider = {
 
     try {
       const user = JSON.parse(userStr);
-
       return Promise.resolve(user.roles || []);
     } catch {
       return Promise.reject();

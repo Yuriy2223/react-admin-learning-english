@@ -38,8 +38,26 @@ export interface Phrase {
   audioUrl?: string;
   topicId: string;
 }
+
+export interface GrammarRule {
+  id: string;
+  title: string;
+  description: string;
+  examples: string[];
+  topicId: string;
+  isCompleted?: boolean;
+}
+
+export interface GrammarQuestion {
+  id: string;
+  topicId: string;
+  question: string;
+  options: string[];
+  correctAnswer: number;
+  explanation?: string;
+}
 /***************************************************************************************** */
-// Exercise types
+
 export interface Exercise {
   id: string;
   type: "multiple_choice" | "fill_blank" | "translation";
@@ -50,7 +68,6 @@ export interface Exercise {
   topicId: string;
 }
 
-// Achievement types
 export interface Achievement {
   id: string;
   title: string;
