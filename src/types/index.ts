@@ -56,7 +56,18 @@ export interface GrammarQuestion {
   correctAnswer: number;
   explanation?: string;
 }
-/***************************************************************************************** */
+
+export interface TopicExercise {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl?: string;
+  difficulty: "beginner" | "intermediate" | "advanced";
+  totalItems: number;
+  completedItems: number;
+  totalScore: number;
+  earnedScore: number;
+}
 
 export interface Exercise {
   id: string;
@@ -77,6 +88,7 @@ export interface Achievement {
   category: "words" | "phrases" | "exercises" | "grammar" | "streak" | "points";
   target: number;
   points: number;
-  isActive: boolean;
+  progress: number;
+  isUnlocked: boolean;
+  unlockedAt?: string;
 }
-/******************************* */

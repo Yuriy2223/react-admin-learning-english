@@ -1,4 +1,5 @@
-import { Admin, Resource } from "react-admin";
+import { Admin, CustomRoutes, Resource } from "react-admin";
+import { Route } from "react-router-dom";
 import { authProvider } from "./providers/authProvider";
 import { dataProvider } from "./providers/dataProvider";
 import { Dashboard } from "./components/Dashboard";
@@ -34,6 +35,17 @@ import { GrammarRuleCreate } from "./resources/grammar/GrammarRuleCreate";
 import { GrammarQuestionList } from "./resources/grammar/GrammarQuestionList";
 import { GrammarQuestionCreate } from "./resources/grammar/GrammarQuestionCreate";
 import { GrammarQuestionEdit } from "./resources/grammar/GrammarQuestionEdit";
+import { ExerciseTopicList } from "./resources/exercises/ExerciseTopicList";
+import { ExerciseTopicCreate } from "./resources/exercises/ExerciseTopicCreate";
+import { ExerciseTopicEdit } from "./resources/exercises/ExerciseTopicEdit";
+import { ExerciseList } from "./resources/exercises/ExerciseList";
+import { ExerciseCreate } from "./resources/exercises/ExerciseCreate";
+import { ExerciseEdit } from "./resources/exercises/ExerciseEdit";
+import { AchievementList } from "./resources/achievements/AchievementList";
+import { AchievementCreate } from "./resources/achievements/AchievementCreate";
+import { AchievementEdit } from "./resources/achievements/AchievementEdit";
+import { CustomLoginPage } from "./components/CustomLoginPage";
+import { GoogleCallbackPage } from "./components/GoogleCallbackPage";
 
 export default function App() {
   return (
@@ -42,7 +54,11 @@ export default function App() {
       authProvider={authProvider}
       dashboard={Dashboard}
       title="English Learning Admin"
+      loginPage={CustomLoginPage}
     >
+      <CustomRoutes noLayout>
+        <Route path="/auth/callback" element={<GoogleCallbackPage />} />
+      </CustomRoutes>
       <Resource
         name="users"
         list={UserList}
@@ -67,7 +83,7 @@ export default function App() {
         edit={VocabularyWordEdit}
         create={VocabularyWordCreate}
         icon={AbcIcon}
-        options={{ label: "Vocabulary Words" }}
+        options={{ label: "Vocabulary" }}
       />
 
       <Resource
@@ -113,6 +129,30 @@ export default function App() {
         create={GrammarQuestionCreate}
         icon={QuizIcon}
         options={{ label: "Grammar Questions" }}
+      />
+
+      <Resource
+        name="exercises/admin/topics"
+        list={ExerciseTopicList}
+        create={ExerciseTopicCreate}
+        edit={ExerciseTopicEdit}
+        options={{ label: "Exercise Topics" }}
+      />
+
+      <Resource
+        name="exercises/admin/exercises"
+        list={ExerciseList}
+        create={ExerciseCreate}
+        edit={ExerciseEdit}
+        options={{ label: "Exercises" }}
+      />
+
+      <Resource
+        name="achievements/admin"
+        list={AchievementList}
+        create={AchievementCreate}
+        edit={AchievementEdit}
+        options={{ label: "Achievements" }}
       />
     </Admin>
   );
