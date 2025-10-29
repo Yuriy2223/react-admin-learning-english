@@ -6,6 +6,8 @@ import { phrasesDataProvider } from "./dataProviders/phrasesDataProvider";
 import { API_URL } from "./authProvider";
 import { grammarDataProvider } from "./dataProviders/grammarDataProvider";
 import { refreshToken } from "../utils/tokenUtils";
+import { exercisesDataProvider } from "./dataProviders/exercisesDataProvider";
+import { achievementsDataProvider } from "./dataProviders/achievementsDataProvider";
 
 export const httpClient = async (
   url: string,
@@ -67,6 +69,14 @@ export const dataProvider: DataProvider = {
       return grammarDataProvider.getList(resource, params);
     }
 
+    if (resource.startsWith("exercises/")) {
+      return exercisesDataProvider.getList(resource, params);
+    }
+
+    if (resource.startsWith("achievements/")) {
+      return achievementsDataProvider.getList(resource);
+    }
+
     const { json } = await httpClient(`${API_URL}/${resource}`);
     return {
       data: Array.isArray(json) ? json : json.data || [],
@@ -91,6 +101,14 @@ export const dataProvider: DataProvider = {
       return grammarDataProvider.getOne(resource, params);
     }
 
+    if (resource.startsWith("exercises/")) {
+      return exercisesDataProvider.getOne(resource, params);
+    }
+
+    if (resource.startsWith("achievements/")) {
+      return achievementsDataProvider.getOne(resource, params);
+    }
+
     const { json } = await httpClient(`${API_URL}/${resource}/${params.id}`);
     return { data: json };
   },
@@ -112,6 +130,14 @@ export const dataProvider: DataProvider = {
       return grammarDataProvider.getMany(resource, params);
     }
 
+    if (resource.startsWith("exercises/")) {
+      return exercisesDataProvider.getMany(resource, params);
+    }
+
+    if (resource.startsWith("achievements/")) {
+      return achievementsDataProvider.getMany(resource, params);
+    }
+
     const promises = params.ids.map((id) =>
       httpClient(`${API_URL}/${resource}/${id}`).then(({ json }) => json)
     );
@@ -130,6 +156,10 @@ export const dataProvider: DataProvider = {
 
     if (resource.startsWith("grammar/")) {
       return grammarDataProvider.getManyReference(resource, params);
+    }
+
+    if (resource.startsWith("exercises/")) {
+      return exercisesDataProvider.getManyReference(resource, params);
     }
 
     const { json } = await httpClient(`${API_URL}/${resource}`);
@@ -155,6 +185,14 @@ export const dataProvider: DataProvider = {
 
     if (resource.startsWith("grammar/")) {
       return grammarDataProvider.create(resource, params);
+    }
+
+    if (resource.startsWith("exercises/")) {
+      return exercisesDataProvider.create(resource, params);
+    }
+
+    if (resource.startsWith("achievements/")) {
+      return achievementsDataProvider.create(resource, params);
     }
 
     const { json } = await httpClient(`${API_URL}/${resource}`, {
@@ -186,6 +224,14 @@ export const dataProvider: DataProvider = {
 
     if (resource.startsWith("grammar/")) {
       return grammarDataProvider.update(resource, params);
+    }
+
+    if (resource.startsWith("exercises/")) {
+      return exercisesDataProvider.update(resource, params);
+    }
+
+    if (resource.startsWith("achievements/")) {
+      return achievementsDataProvider.update(resource, params);
     }
 
     const { json } = await httpClient(`${API_URL}/${resource}/${params.id}`, {
@@ -227,6 +273,14 @@ export const dataProvider: DataProvider = {
       return grammarDataProvider.delete(resource, params);
     }
 
+    if (resource.startsWith("exercises/")) {
+      return exercisesDataProvider.delete(resource, params);
+    }
+
+    if (resource.startsWith("achievements/")) {
+      return achievementsDataProvider.delete(resource, params);
+    }
+
     const { json } = await httpClient(`${API_URL}/${resource}/${params.id}`, {
       method: "DELETE",
     });
@@ -248,6 +302,14 @@ export const dataProvider: DataProvider = {
 
     if (resource.startsWith("grammar/")) {
       return grammarDataProvider.deleteMany(resource, params);
+    }
+
+    if (resource.startsWith("exercises/")) {
+      return exercisesDataProvider.deleteMany(resource, params);
+    }
+
+    if (resource.startsWith("achievements/")) {
+      return achievementsDataProvider.deleteMany(resource, params);
     }
 
     const promises = params.ids.map((id) =>
