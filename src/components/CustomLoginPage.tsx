@@ -11,8 +11,7 @@ import {
 } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useLogin, useNotify } from "react-admin";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+import { API_URL } from "../providers/authProvider";
 
 export const CustomLoginPage = () => {
   const [email, setEmail] = useState("");

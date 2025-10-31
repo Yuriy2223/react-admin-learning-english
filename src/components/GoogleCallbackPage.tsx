@@ -2,8 +2,7 @@ import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { useNotify } from "react-admin";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+import { API_URL } from "../providers/authProvider";
 
 export const GoogleCallbackPage = () => {
   const [searchParams] = useSearchParams();
