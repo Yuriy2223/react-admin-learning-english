@@ -91,6 +91,12 @@ export const authProvider: AuthProvider = {
     const token = localStorage.getItem("token");
     return token ? Promise.resolve() : Promise.reject();
   },
+  // checkAuth: () => {
+  //   const token = localStorage.getItem("token");
+  //   const user = localStorage.getItem("user");
+
+  //   return token && user ? Promise.resolve() : Promise.reject();
+  // },
 
   checkError: async (error) => {
     const status = error.status;

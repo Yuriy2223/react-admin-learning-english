@@ -1,5 +1,4 @@
-import { Admin, CustomRoutes, Resource } from "react-admin";
-import { Route } from "react-router-dom";
+import { Admin, Resource } from "react-admin";
 import { authProvider } from "./providers/authProvider";
 import { dataProvider } from "./providers/dataProvider";
 import { Dashboard } from "./components/Dashboard";
@@ -44,8 +43,7 @@ import { ExerciseEdit } from "./resources/exercises/ExerciseEdit";
 import { AchievementList } from "./resources/achievements/AchievementList";
 import { AchievementCreate } from "./resources/achievements/AchievementCreate";
 import { AchievementEdit } from "./resources/achievements/AchievementEdit";
-import { CustomLoginPage } from "./components/CustomLoginPage";
-import { GoogleCallbackPage } from "./components/GoogleCallbackPage";
+// import { CustomLoginPage } from "./components/CustomLoginPage";
 
 export default function App() {
   return (
@@ -54,11 +52,8 @@ export default function App() {
       authProvider={authProvider}
       dashboard={Dashboard}
       title="English Learning Admin"
-      loginPage={CustomLoginPage}
+      // loginPage={CustomLoginPage}
     >
-      <CustomRoutes noLayout>
-        <Route path="/auth/callback" element={<GoogleCallbackPage />} />
-      </CustomRoutes>
       <Resource
         name="users"
         list={UserList}

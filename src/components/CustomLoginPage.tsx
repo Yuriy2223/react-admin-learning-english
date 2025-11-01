@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Card,
@@ -8,6 +8,7 @@ import {
   Typography,
   Alert,
   Divider,
+  CircularProgress,
 } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useLogin, useNotify } from "react-admin";
@@ -20,6 +21,58 @@ export const CustomLoginPage = () => {
   const [error, setError] = useState("");
   const login = useLogin();
   const notify = useNotify();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const googleToken = params.get("googleToken");
+    const error = params.get("error");
+
+    if (error) {
+      let errorMessage = "Помилка автентифікації через Google";
+
+      if (error === "user_not_found") {
+        errorMessage = "Користувач не знайдений";
+      } else if (error === "not_admin") {
+        errorMessage = "Доступ тільки для адміністратора";
+      } else if (error === "auth_failed") {
+        errorMessage = "Не вдалося авторизуватися через Google";
+      }
+
+      notify(errorMessage, { type: "error" });
+      setError(errorMessage);
+      window.history.replaceState({}, "", window.location.pathname);
+      return;
+    }
+
+    if (googleToken) {
+      setLoading(true);
+
+      fetch(`${API_URL}/users/me`, {
+        headers: { Authorization: `Bearer ${googleToken}` },
+        credentials: "include",
+      })
+        .then((res) => res.json())
+        .then((user) => {
+          if (!user.roles?.includes("admin")) {
+            notify("Доступ тільки для адміністратора", {
+              type: "error",
+            });
+            setLoading(false);
+            window.history.replaceState({}, "", window.location.pathname);
+            return;
+          }
+
+          localStorage.setItem("token", googleToken);
+          localStorage.setItem("user", JSON.stringify(user));
+          window.location.href = "/";
+        })
+        .catch(() => {
+          notify("Помилка отримання даних користувача", { type: "error" });
+          setLoading(false);
+          window.history.replaceState({}, "", window.location.pathname);
+        });
+    }
+  }, [notify]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,8 +90,24 @@ export const CustomLoginPage = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = `${API_URL}/auth/google`;
+    window.location.href = `${API_URL}/auth/google?state=admin`;
   };
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box
