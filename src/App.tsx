@@ -3,13 +3,12 @@ import { authProvider } from "./providers/authProvider";
 import { dataProvider } from "./providers/dataProvider";
 import { Dashboard } from "./components/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
-import BookIcon from "@mui/icons-material/Book";
-import AbcIcon from "@mui/icons-material/Abc";
-import ChatIcon from "@mui/icons-material/Chat";
 import CommentIcon from "@mui/icons-material/Comment";
 import SchoolIcon from "@mui/icons-material/School";
 import RuleIcon from "@mui/icons-material/Rule";
 import QuizIcon from "@mui/icons-material/Quiz";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import { UserList } from "./resources/users/UserList";
 import { UserEdit } from "./resources/users/UserEdit";
 import { UserShow } from "./resources/users/UserShow";
@@ -69,7 +68,7 @@ export default function App() {
         list={VocabularyTopicList}
         edit={VocabularyTopicEdit}
         create={VocabularyTopicCreate}
-        icon={BookIcon}
+        icon={SchoolIcon}
         options={{ label: "Vocabulary Topics" }}
       />
 
@@ -78,7 +77,7 @@ export default function App() {
         list={VocabularyWordList}
         edit={VocabularyWordEdit}
         create={VocabularyWordCreate}
-        icon={AbcIcon}
+        icon={AssignmentIcon}
         options={{ label: "Vocabulary" }}
       />
 
@@ -87,7 +86,7 @@ export default function App() {
         list={PhrasesTopicList}
         edit={PhrasesTopicEdit}
         create={PhrasesTopicCreate}
-        icon={ChatIcon}
+        icon={SchoolIcon}
         options={{ label: "Phrases Topics" }}
       />
 
@@ -132,6 +131,7 @@ export default function App() {
         list={ExerciseTopicList}
         create={ExerciseTopicCreate}
         edit={ExerciseTopicEdit}
+        icon={SchoolIcon}
         options={{ label: "Exercise Topics" }}
       />
 
@@ -140,6 +140,7 @@ export default function App() {
         list={ExerciseList}
         create={ExerciseCreate}
         edit={ExerciseEdit}
+        icon={AssignmentIcon}
         options={{ label: "Exercises" }}
       />
 
@@ -148,6 +149,7 @@ export default function App() {
         list={AchievementList}
         create={AchievementCreate}
         edit={AchievementEdit}
+        icon={EmojiEventsIcon}
         options={{ label: "Achievements" }}
       />
     </Admin>
