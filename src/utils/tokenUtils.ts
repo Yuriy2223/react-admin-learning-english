@@ -5,11 +5,9 @@ let refreshPromise: Promise<string> | null = null;
 
 export const refreshToken = async (): Promise<string> => {
   if (isRefreshing && refreshPromise) {
-    console.log("[RefreshToken] Already refreshing, waiting...");
     return refreshPromise;
   }
 
-  console.log("[RefreshToken] Starting token refresh...");
   isRefreshing = true;
   refreshPromise = (async () => {
     try {
@@ -22,8 +20,6 @@ export const refreshToken = async (): Promise<string> => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        console.error("[RefreshToken] Failed:", response.status, errorData);
         throw new Error(`Failed to refresh token: ${response.status}`);
       }
 
@@ -31,12 +27,11 @@ export const refreshToken = async (): Promise<string> => {
       const { accessToken } = data;
 
       if (!accessToken) {
-        console.error("[RefreshToken] No accessToken in response");
         throw new Error("No accessToken received");
       }
 
       localStorage.setItem("token", accessToken);
-      console.log("[RefreshToken] Success! New token saved");
+
       return accessToken;
     } catch (error) {
       console.error("[RefreshToken] Error:", error);
