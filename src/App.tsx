@@ -43,7 +43,7 @@ import { ExerciseEdit } from "./resources/exercises/ExerciseEdit";
 import { AchievementList } from "./resources/achievements/AchievementList";
 import { AchievementCreate } from "./resources/achievements/AchievementCreate";
 import { AchievementEdit } from "./resources/achievements/AchievementEdit";
-// import { CustomLoginPage } from "./components/CustomLoginPage";
+import { LoginPage } from "./components/LoginPage";
 
 export default function App() {
   return (
@@ -52,7 +52,8 @@ export default function App() {
       authProvider={authProvider}
       dashboard={Dashboard}
       title="English Learning Admin"
-      // loginPage={CustomLoginPage}
+      loginPage={LoginPage}
+      requireAuth
     >
       <Resource
         name="users"
