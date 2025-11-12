@@ -1,9 +1,8 @@
-import { Login, LoginForm } from "react-admin";
+import { Login, LoginForm, useNotify } from "react-admin";
 import { Button, CardContent, Divider } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import { API_URL } from "../providers/authProvider";
 import { useEffect, useRef } from "react";
-import { useNotify } from "react-admin";
 
 const CustomLoginForm = () => {
   const notify = useNotify();
@@ -15,6 +14,7 @@ const CustomLoginForm = () => {
     const params = new URLSearchParams(window.location.search);
     const errorParam = params.get("error");
     const googleToken = params.get("googleToken");
+    const refreshToken = params.get("refreshToken");
 
     if (errorParam) {
       processedRef.current = true;
@@ -33,11 +33,11 @@ const CustomLoginForm = () => {
       return;
     }
 
-    if (googleToken) {
+    if (googleToken && refreshToken) {
       processedRef.current = true;
 
       fetch(`${API_URL}/users/me`, {
-        headers: { Authorization: `Bearer ${googleToken}` },
+        headers: { Authorization: `Bearer ${decodeURIComponent(googleToken)}` },
         credentials: "include",
       })
         .then((res) => {
@@ -51,12 +51,27 @@ const CustomLoginForm = () => {
             return;
           }
 
-          localStorage.setItem("token", googleToken);
-          localStorage.setItem("user", JSON.stringify(user));
-          window.history.replaceState({}, "", "/");
+          localStorage.setItem("token", decodeURIComponent(googleToken));
+          localStorage.setItem(
+            "refreshToken",
+            decodeURIComponent(refreshToken)
+          );
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              emailVerified: user.isEmailVerified,
+              avatar: user.avatar,
+              roles: user.roles,
+            })
+          );
+
           window.location.href = "/";
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error("User fetch error:", error);
           notify("Помилка отримання даних користувача", { type: "error" });
           window.history.replaceState({}, "", window.location.pathname);
         });
