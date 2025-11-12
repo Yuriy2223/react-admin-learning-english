@@ -83,6 +83,7 @@ export const authProvider: AuthProvider = {
     }
 
     localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
     localStorage.removeItem("user");
     return Promise.resolve();
   },
@@ -101,6 +102,7 @@ export const authProvider: AuthProvider = {
         return Promise.resolve();
       } catch {
         localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
         localStorage.removeItem("user");
         return Promise.reject({
           message: "Authentication failed",
@@ -111,6 +113,7 @@ export const authProvider: AuthProvider = {
 
     if (status === 403) {
       localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
       localStorage.removeItem("user");
       return Promise.reject({ message: "Access denied" });
     }
